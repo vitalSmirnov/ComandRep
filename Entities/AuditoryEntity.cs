@@ -1,7 +1,6 @@
 namespace CloneIntime.Entities;
 
-public class AuditoryEntity
+public class AuditoryEntity : BaseEntity
 {
-    public Guid Id;
     public Int32 Nmmber;
 }

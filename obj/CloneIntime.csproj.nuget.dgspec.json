@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\smirn\\PROJECTS\\Team Dev\\CloneIntime\\CloneIntime.csproj": {}
+    "C:\\Users\\smirn\\PROJECTS\\source\\repos\\ComandRep\\CloneIntime.csproj": {}
   },
   "projects": {
-    "C:\\Users\\smirn\\PROJECTS\\Team Dev\\CloneIntime\\CloneIntime.csproj": {
+    "C:\\Users\\smirn\\PROJECTS\\source\\repos\\ComandRep\\CloneIntime.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\smirn\\PROJECTS\\Team Dev\\CloneIntime\\CloneIntime.csproj",
+        "projectUniqueName": "C:\\Users\\smirn\\PROJECTS\\source\\repos\\ComandRep\\CloneIntime.csproj",
         "projectName": "CloneIntime",
-        "projectPath": "C:\\Users\\smirn\\PROJECTS\\Team Dev\\CloneIntime\\CloneIntime.csproj",
+        "projectPath": "C:\\Users\\smirn\\PROJECTS\\source\\repos\\ComandRep\\CloneIntime.csproj",
         "packagesPath": "C:\\Users\\smirn\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\smirn\\PROJECTS\\Team Dev\\CloneIntime\\obj\\",
+        "outputPath": "C:\\Users\\smirn\\PROJECTS\\source\\repos\\ComandRep\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\smirn\\AppData\\Roaming\\NuGet\\NuGet.Config",

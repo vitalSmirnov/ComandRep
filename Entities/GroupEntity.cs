@@ -1,9 +1,8 @@
 namespace CloneIntime.Entities;
 
-public class GroupEntity
+public class GroupEntity : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Number { get; set; }
-    public EdDirectionEntity Direction { get; set; }
+    public DirectionEntity Direction { get; set; }
     public string Name { get; set; }
 }

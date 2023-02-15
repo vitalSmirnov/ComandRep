@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bo+mCITDoFbTihNV9JO5COCxRxIbHbpI2q5cW2OB2j9mYO3J2oVnveNdmkAZkKB9qOCswpd5oxLo3zfnCSegFQ==",
+  "dgSpecHash": "J/aAEMHoXgI904tizWViJOa37/GNPHrjappemwaJ1ceOrFpcZMHuf6R8AzUC6Ef8Mqxk/meSqJ1ZHAmp14KvMQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\smirn\\PROJECTS\\Team Dev\\CloneIntime\\CloneIntime.csproj",
+  "projectFilePath": "C:\\Users\\smirn\\PROJECTS\\source\\repos\\ComandRep\\CloneIntime.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\smirn\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\smirn\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",

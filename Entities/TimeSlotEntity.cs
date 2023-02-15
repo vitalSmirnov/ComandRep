@@ -1,10 +1,9 @@
 namespace CloneIntime.Entities;
 
-public class TimeSlotEntity
+public class TimeSlotEntity : BaseEntity
 {
-    public Guid Id { get; set; }
-
     public PairEntity Pair { get; set; }
-    public TimeOnly StartTime { get; set; }
-    public TimeOnly EndTime { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; } //ћожно достать дату из начала/окончани€
+    public WeekEnum WeekDay { get; set; } // кстати тоже можно достать оттуда (см.выше)
 }
