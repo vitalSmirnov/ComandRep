@@ -3,28 +3,37 @@ using CloneIntime.Entities;
 
 namespace CloneIntime.Repository
 {
+    // Реализация этого класса используется для работы с БД
     public interface IDbRepository
     {
+        // Эти методы предназначены для сохранения одной сущности и листа из сущностей в БД
         Task Save<T>(T entity) where T : BaseEntity;
         Task SaveAll<T>(IEnumerable<T> entities) where T : BaseEntity;
         
+        // Эти методы - для поиска функции-селектору, которые передается, как параметр и также находит только записи, где IsActive == true
         IQueryable<T> FindBy<T>(Expression<Func<T, bool>> selector) where T : BaseEntity;
         IQueryable<T> FindActiveBy<T>(Expression<Func<T, bool>> selector) where T : BaseEntity;
         
+        // Эти - для поиска вообще всех записей и всех записей, где IsActive == true
         IQueryable<T> FindAll<T>() where T : BaseEntity;
         IQueryable<T> FindAllActive<T>() where T : BaseEntity;
 
+        // Эти - для обновления сущности и листа из сущностей в БД
         Task Update<T>(T entity) where T : BaseEntity;
         Task UpdateAll<T>(IEnumerable<T> entity) where T : BaseEntity;
 
+        // Эти - для полного удаления сущности и сущностей по функции-селектору из БД
         Task Delete<T>(T entity) where T : BaseEntity;
         Task DeleteBy<T>(Expression<Func<T, bool>> selector) where T : BaseEntity;
         
+        // Эти - для условного или добавления удаления сущности и сущностей по функции-селектору в БД, путем смены флажка IsActive 
         Task ChangeActivity<T>(T entity) where T : BaseEntity;
         Task ChangeActivityBy<T>(Expression<Func<T, bool>> selector) where T : BaseEntity;
 
+        // Тоже самое, что выше, но для списка
         Task ChangeAllActivity<T>(IEnumerable<T> entity) where T : BaseEntity;
         
+        // Метод, который нужен, чтобы принять все изменения
         Task<int> SaveChangesAsync();
     }
     
