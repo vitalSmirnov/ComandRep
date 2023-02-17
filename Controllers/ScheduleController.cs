@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CloneIntime.Models;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,6 +23,16 @@ namespace CloneIntime.Controllers
 
         [HttpGet("teacher/{teacherId}")]
         public async Task Post([FromQuery] string teacherId)
+        {
+
+        }
+        [HttpPost("add/pair/{id}")]
+        public async Task SetPair([FromQuery] string id, SetTimeSlotModel model)
+        {
+            
+        }
+        [HttpDelete("add/pair/{id}")]
+        public async Task DeletePair([FromQuery] string id)
         {
 
         }

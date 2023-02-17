@@ -6,9 +6,12 @@ namespace CloneIntime.Controllers
     [Route("api/teacher")]
     public class ProfessorsController : Controller
     {
+        [HttpGet]
         public async Task GetTeachers()
         {
             return Task.FromResult(0);
         }
+
+        public async Task GetTeachers()
     }
 }

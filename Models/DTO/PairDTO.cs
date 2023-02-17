@@ -11,7 +11,7 @@ namespace CloneIntime.Models.DTO
         [Required]
         public List<GroupDTO> Groups { get; set; }
         [Required]
-        public List<string> Discipline { get; set; }
+        public string Discipline { get; set; }
         [Required]
         public Int32 Audiroty { get; set; }
     }
