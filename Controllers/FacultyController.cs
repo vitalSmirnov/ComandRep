@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CloneIntime.Models.DTO;
+using CloneIntime.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CloneIntime.Controllers
 {
@@ -6,10 +8,17 @@ namespace CloneIntime.Controllers
     [ApiController]
     public class FacultyController : Controller
     {
-        [HttpGet]
-        public async Task GetFaculties()
-        {
+        private readonly IFacultyService _facultyService;
 
+        public FacultyController(IFacultyService facultyService)
+        {
+            _facultyService = facultyService;
+        }
+
+        [HttpGet]
+        public async Task<List<FacultyDTO>> GetFaculties()
+        {
+            return await _facultyService.GetFaculties();
         }
     }
 }
