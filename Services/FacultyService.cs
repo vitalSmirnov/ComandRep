@@ -18,7 +18,7 @@ namespace CloneIntime.Services
         {
             var facultyEntities = await _context
                 .Faculties
-                .ToListAsync();
+                .ToListAsync(); // ToList() не надо делать при запросе из бд, это перегружает сервер
 
             var faculties = 
                 facultyEntities
