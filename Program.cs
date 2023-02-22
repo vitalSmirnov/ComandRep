@@ -1,3 +1,6 @@
+using CloneIntime.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +10,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//DB
+var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<Context>(options => options.UseSqlServer(connection));
+
 var app = builder.Build();
+
+//DB init:
+using var serviceScope = app.Services.CreateScope();
+var dbContext = serviceScope.ServiceProvider.GetService<Context>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
