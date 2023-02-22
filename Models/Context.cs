@@ -17,6 +17,7 @@ namespace CloneIntime.Models
         public DbSet<TimeSlotEntity> TimeSlotEntities { get; set; }
         public Context(DbContextOptions<Context> options) : base(options)
         {
+            Database.EnsureCreated();
         }
 
     }

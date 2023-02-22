@@ -1,4 +1,5 @@
 ﻿using CloneIntime.Entities;
+using CloneIntime.Models;
 using CloneIntime.Models.DTO;
 using CloneIntime.Repository;
 using CloneIntime.Services.Interfaces;
@@ -9,8 +10,8 @@ namespace CloneIntime.Services
 {
     public class GroupService : IGroupService
     {
-        private readonly InTimeContext _context;
-        public GroupService(InTimeContext context)
+        private readonly Context _context;
+        public GroupService(Context context)
         {
             _context = context;
         }
@@ -29,7 +30,7 @@ namespace CloneIntime.Services
 
         public async Task<List<GroupDTO>> GetGroups(string directionId) // Получить группы на определенном направлении
         {
-            var groupEntity = _context.Groups.Include(x => x.Direction.Id)
+            var groupEntity = _context.GroupEntities.Include(x => x.Direction.Id)
                 .Where(j => j.Direction.Id.ToString() == directionId);
 
             if (groupEntity == null)
