@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CloneIntime.Models.DTO;
+using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CloneIntime.Controllers
 {
@@ -8,10 +8,18 @@ namespace CloneIntime.Controllers
     [ApiController]
     public class DisciplineController : ControllerBase
     {
-        [HttpGet("{groupId}")]
-        public Task GetDisciplines([FromQuery] string groupId)
+
+        private readonly IDisciplineService _disciplineService;
+
+        public DisciplineController(IDisciplineService disciplineService)
         {
-            return Task.FromResult(0);
+            _disciplineService = disciplineService;
+        }
+
+        [HttpGet("{facultyId}")]
+        public async Task<List<DirectionDTO>> GetDisciplines([FromQuery] string facultyId)
+        {
+            return await _disciplineService.GetDisciplines(facultyId);
         }
     }
 }

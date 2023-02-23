@@ -1,4 +1,6 @@
 ﻿using CloneIntime.Models;
+using CloneIntime.Models.DTO;
+using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,32 +11,29 @@ namespace CloneIntime.Controllers
     [ApiController]
     public class ScheduleController : ControllerBase
     {
-        [HttpGet("group/{groupId}")]
-        public async Task GetGroupsSchedule([FromQuery] string groupId)
+        private readonly IScheduleService _scheduleService;
+
+        public ScheduleController(IScheduleService scheduleService)
         {
-        
+            _scheduleService = scheduleService;
+        }
+
+        [HttpGet("group/{groupId}")]
+        public async Task<WeekDTO> GetGroupsSchedule([FromQuery] string groupId)
+        {
+            return await _scheduleService.GetGroupsSchedule(groupId);
         }
 
         [HttpGet("auditory/{auditoryId}")]
-        public async Task Get([FromQuery] string AudId)
+        public async Task<WeekDTO> GetAuditorySchedule([FromQuery] string audId)
         {
-            
+            return await _scheduleService.GetAuditorySchedule(audId);
         }
 
         [HttpGet("teacher/{teacherId}")]
-        public async Task Post([FromQuery] string teacherId)
+        public async Task<WeekDTO> GetTecherSchedule([FromQuery] string teacherId)
         {
-
-        }
-        [HttpPost("add/pair/{id}")]
-        public async Task SetPair([FromQuery] string id, SetTimeSlotModel model)
-        {
-            
-        }
-        [HttpDelete("add/pair/{id}")]
-        public async Task DeletePair([FromQuery] string id)
-        {
-
+            return await _scheduleService.GetTecherSchedule(teacherId);
         }
     }
 }

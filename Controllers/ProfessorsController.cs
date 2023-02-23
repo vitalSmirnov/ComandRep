@@ -1,17 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CloneIntime.Models.DTO;
+using CloneIntime.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CloneIntime.Controllers
 {
     [ApiController]
-    [Route("api/teacher")]
+    [Route("api/teachers")]
     public class ProfessorsController : Controller
     {
-        [HttpGet]
-        public async Task GetTeachers()
+        private readonly IProfessorsService _professorsService;
+
+        public ProfessorsController(IProfessorsService professorsService)
         {
-            return Task.FromResult(0);
+            _professorsService = professorsService;
         }
 
-        public async Task GetTeachers()
+        [HttpGet]
+        public async Task<List<ProffessorDTO>> GetTeachers()
+        {
+            return await _professorsService.GetTeachers();
+        }
     }
 }

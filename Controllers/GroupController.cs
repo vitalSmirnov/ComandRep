@@ -1,15 +1,24 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CloneIntime.Models.DTO;
+using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloneIntime.Controllers
 {
-    [Route("api/group")]
+    [Route("api/groups")]
     [ApiController]
     public class GroupController : ControllerBase
     {
-        [HttpGet]
-        public async Task GetGroups()
+        private readonly IGroupService _groupService;
+
+        public GroupController(IGroupService groupService)
         {
+            _groupService = groupService;
+        }
+
+        [HttpGet]
+        public async Task<List<GroupDTO>> GetGroups([FromBody] string disciplineId)
+        {
+            return await _groupService.GetGroups(disciplineId);
             
         }
 
