@@ -2,8 +2,6 @@
 {
     public class GroupDTO
     {
-        public DirectionDTO Direction;
-        public string Number;
-        public string Name;
+        public int id { get; set; }  // id = 972101
     }
 }
