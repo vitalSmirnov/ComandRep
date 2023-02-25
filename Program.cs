@@ -1,4 +1,5 @@
 using CloneIntime.Models;
+using CloneIntime.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<FacultyService>();
+builder.Services.AddScoped<DirectionService>();
+builder.Services.AddScoped<DisciplineService>();
+builder.Services.AddScoped<GroupService>();
+builder.Services.AddScoped<ProfessorsService>();
+builder.Services.AddScoped<ScheduleService>();
 
 //DB
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
