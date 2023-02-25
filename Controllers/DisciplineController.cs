@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CloneIntime.Controllers
 {
-    [Route("api/discipline")]
+    [Route("api/disciplines")]
     [ApiController]
     public class DisciplineController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace CloneIntime.Controllers
         }
 
         [HttpGet("{facultyId}")]
-        public async Task<List<DirectionDTO>> GetDisciplines([FromQuery] string facultyId)
+        public async Task<List<DirectionDTO>> GetDisciplines(string facultyId)
         {
             return await _disciplineService.GetDisciplines(facultyId);
         }

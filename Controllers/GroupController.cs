@@ -15,8 +15,8 @@ namespace CloneIntime.Controllers
             _groupService = groupService;
         }
 
-        [HttpGet]
-        public async Task<List<GroupDTO>> GetGroups([FromBody] string disciplineId)
+        [HttpGet("{disciplineId}")]
+        public async Task<List<GroupDTO>> GetGroups(string disciplineId)
         {
             return await _groupService.GetGroups(disciplineId);
             

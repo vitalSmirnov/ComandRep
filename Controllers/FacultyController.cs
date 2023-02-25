@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CloneIntime.Controllers
 {
-    [Route("api/faculty")]
+    [Route("api/faculties")]
     [ApiController]
     public class FacultyController : Controller
     {

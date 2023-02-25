@@ -39,20 +39,20 @@ namespace CloneIntime.Controllers
 
         [HttpPut("update/teacher/{teacherId}")]
         [Authorize]
-        public async Task UpdateTeacher([FromQuery] string teacherId)
+        public async Task UpdateTeacher(string teacherId, [FromBody] ProffessorDTO newTeacherData)
         {
             await _adminService.UpdateTeacher(teacherId);
         }
 
         [HttpDelete("delete/teacher/{teacherId}")]
         [Authorize]
-        public async Task DeleteTeacher([FromQuery] string teacherId)
+        public async Task DeleteTeacher(string teacherId)
         {
             await _adminService.DeleteTeacher(teacherId);
         }
 
 
-        [HttpPost("add/pair/{id}")]
+        [HttpPost("add/pair")]
         [Authorize]
         public async Task SetPair([FromQuery] string id, [FromBody] SetTimeSlotModel newPairData)
         {
