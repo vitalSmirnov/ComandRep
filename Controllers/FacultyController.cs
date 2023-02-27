@@ -19,7 +19,8 @@ namespace CloneIntime.Controllers
         [HttpGet]
         public async Task<List<FacultyDTO>> GetFaculties()
         {
-            return await _facultyService.GetFaculties();
+            var result = await _facultyService.GetFaculties();
+            return result;
         }
     }
 }

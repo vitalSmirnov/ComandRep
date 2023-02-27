@@ -17,9 +17,20 @@ builder.Services.AddScoped<GroupService>();
 builder.Services.AddScoped<ProfessorsService>();
 builder.Services.AddScoped<ScheduleService>();
 
+
 //DB
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<Context>(options => options.UseSqlServer(connection));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -37,6 +48,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseCors("AllowAll");
 
 app.MapControllers();
 
