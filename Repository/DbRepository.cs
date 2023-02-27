@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using CloneIntime.Entities;
+using CloneIntime.Models;
 
 namespace CloneIntime.Repository
 {
@@ -39,9 +40,9 @@ namespace CloneIntime.Repository
     
     public class DbRepository : IDbRepository
     {
-        private readonly InTimeContext _context;
+        private readonly Context _context;
 
-        public DbRepository(InTimeContext context)
+        public DbRepository(Context context)
         {
             _context = context;
         }

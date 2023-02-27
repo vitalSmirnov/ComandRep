@@ -1,5 +1,6 @@
-﻿using CloneIntime.Models.DTO;
-using CloneIntime.Repository;
+﻿using CloneIntime.Entities;
+using CloneIntime.Models;
+using CloneIntime.Models.DTO;
 using CloneIntime.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,29 +8,34 @@ namespace CloneIntime.Services
 {
     public class FacultyService : IFacultyService
     {
-        private readonly InTimeContext _context;
+        private readonly Context _context;
 
-        public FacultyService(InTimeContext context)
+        public FacultyService(Context context)
         {
             _context = context;
         }
 
+        private List<FacultyDTO> FillFaculties(IQueryable<FacultyEntity> faculty)
+        {
+            var result = new List<FacultyDTO>();
+            result.AddRange(faculty.Select(direction => new FacultyDTO
+            {
+                Name = direction.Name,
+                Number = direction.Number,
+            }));
+
+            return result;
+        }
+
         public async Task<List<FacultyDTO>> GetFaculties()
         {
-            var facultyEntities = await _context
-                .Faculties
-                .ToListAsync();
+            var directionEntity = _context.FacultyEntities.Where(x => x.IsActive == true);
 
-            var faculties = 
-                facultyEntities
-                .Select(facultyEntity => new FacultyDTO
-                {
-                    Name = facultyEntity.Name,
-                    Number = facultyEntity.Number
-                })
-                .ToList();
+            if (directionEntity == null)
+                return new List<FacultyDTO>(); //прописать исключение
 
-            return faculties;
+
+            return FillFaculties(directionEntity);
         }
     }
 }
