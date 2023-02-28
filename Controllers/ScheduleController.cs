@@ -1,5 +1,6 @@
 ﻿using CloneIntime.Models;
 using CloneIntime.Models.DTO;
+using CloneIntime.Services;
 using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +14,15 @@ namespace CloneIntime.Controllers
     {
         private readonly IScheduleService _scheduleService;
 
-        public ScheduleController(IScheduleService scheduleService)
+        public ScheduleController(ScheduleService scheduleService)
         {
             _scheduleService = scheduleService;
         }
 
-        [HttpGet("group/{id}")]
-        public async Task<WeekDTO> GetGroupsSchedule(string id)
+        [HttpGet("group/{number}")]
+        public async Task<WeekDTO> GetGroupsSchedule(string number)
         {
-            return await _scheduleService.GetGroupsSchedule(id);
+            return await _scheduleService.GetGroupsSchedule(number);
         }
 
         [HttpGet("auditory/{id}")]
