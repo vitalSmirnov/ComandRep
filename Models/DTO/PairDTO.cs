@@ -7,6 +7,9 @@ namespace CloneIntime.Models.DTO
         public LessonTypeEnum LessonType { get; set; }
         public string Proffessor { get; set; }
         public List<GroupDTO> Groups { get; set; }
-        public Int32 Audiroty { get; set; }
+        [Required]
+        public string Discipline { get; set; }
+        [Required]
+        public string Audiroty { get; set; }
     }
 }

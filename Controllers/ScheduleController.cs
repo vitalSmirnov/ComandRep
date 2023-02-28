@@ -1,5 +1,6 @@
 ﻿using CloneIntime.Models;
 using CloneIntime.Models.DTO;
+using CloneIntime.Services;
 using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,27 +14,27 @@ namespace CloneIntime.Controllers
     {
         private readonly IScheduleService _scheduleService;
 
-        public ScheduleController(IScheduleService scheduleService)
+        public ScheduleController(ScheduleService scheduleService)
         {
             _scheduleService = scheduleService;
         }
 
-        [HttpGet("group/{groupId}")]
-        public async Task<WeekDTO> GetGroupsSchedule([FromQuery] string groupId)
+        [HttpGet("group/{number}")]
+        public async Task<WeekDTO> GetGroupsSchedule(string number)
         {
-            return await _scheduleService.GetGroupsSchedule(groupId);
+            return await _scheduleService.GetGroupsSchedule(number);
         }
 
-        [HttpGet("auditory/{auditoryId}")]
-        public async Task<WeekDTO> GetAuditorySchedule([FromQuery] string audId)
+        [HttpGet("auditory/{id}")]
+        public async Task<WeekDTO> GetAuditorySchedule(string id)
         {
-            return await _scheduleService.GetAuditorySchedule(audId);
+            return await _scheduleService.GetAuditorySchedule(id);
         }
 
-        [HttpGet("teacher/{teacherId}")]
-        public async Task<WeekDTO> GetTecherSchedule([FromQuery] string teacherId)
+        [HttpGet("teacher/{id}")]
+        public async Task<WeekDTO> GetTecherSchedule(string id)
         {
-            return await _scheduleService.GetTecherSchedule(teacherId);
+            return await _scheduleService.GetTecherSchedule(id);
         }
     }
 }

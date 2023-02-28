@@ -1,16 +1,15 @@
 ﻿using CloneIntime.Entities;
+using CloneIntime.Models;
 using CloneIntime.Models.DTO;
-using CloneIntime.Repository;
 using CloneIntime.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace CloneIntime.Services
 {
     public class GroupService : IGroupService
     {
-        private readonly InTimeContext _context;
-        public GroupService(InTimeContext context)
+        private readonly Context _context;
+        public GroupService(Context context)
         {
             _context = context;
         }
@@ -22,21 +21,25 @@ namespace CloneIntime.Services
             {
                 Name = group.Name,
                 Number = group.Number,
+                Direction = new DirectionDTO
+                {
+                    Name = group.Direction.Name,
+                    Number = group.Direction.Number
+                }
             }));
 
             return result;
         }
 
-        public async Task<List<GroupDTO>> GetGroups(string directionId) // Получить группы на определенном направлении
+        public async Task<List<GroupDTO>> GetGroups(string directionNumber) // Получить группы на определенном направлении
         {
-            var groupEntity = _context.Groups.Include(x => x.Direction.Id)
-                .Where(j => j.Direction.Id.ToString() == directionId);
+            var groupEntity = _context.GroupEntities.Include(x => x.Direction)
+                .Where(j => j.Direction.Number == directionNumber && j.IsActive);
 
             if (groupEntity == null)
                 return new List<GroupDTO>(); //прописать исключение
 
-
-            return FillGroups(groupEntity); 
+            return FillGroups(groupEntity);
         }
     }
 }

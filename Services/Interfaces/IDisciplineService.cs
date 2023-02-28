@@ -4,6 +4,6 @@ namespace CloneIntime.Services.Interfaces
 {
     public interface IDisciplineService
     {
-        Task<List<DirectionDTO>> GetDisciplines(string groupId);
+        Task<List<DisciplineDTO>> GetDisciplines(string groupId);
     }
 }

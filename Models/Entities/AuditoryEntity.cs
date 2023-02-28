@@ -2,5 +2,6 @@ namespace CloneIntime.Entities;
 
 public class AuditoryEntity : BaseEntity
 {
-    public Int32 Nmmber;
+    public string Number { get; set; }
+    public string Building { get; set; }
 }

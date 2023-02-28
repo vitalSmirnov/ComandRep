@@ -1,4 +1,5 @@
 ﻿using CloneIntime.Models.DTO;
+using CloneIntime.Services;
 using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,7 @@ namespace CloneIntime.Controllers
     {
         private readonly IProfessorsService _professorsService;
 
-        public ProfessorsController(IProfessorsService professorsService)
+        public ProfessorsController(ProfessorsService professorsService)
         {
             _professorsService = professorsService;
         }
@@ -18,7 +19,13 @@ namespace CloneIntime.Controllers
         [HttpGet]
         public async Task<List<ProffessorDTO>> GetTeachers()
         {
-            return await _professorsService.GetTeachers();
+            return await _professorsService.GetProfessors();
+        }
+
+        [HttpGet("{disciplineId}")]
+        public async Task<List<ProffessorDTO>> GetConcreteProffessor(string disciplineId)
+        {
+            return await _professorsService.GetProfessors(disciplineId);
         }
     }
 }

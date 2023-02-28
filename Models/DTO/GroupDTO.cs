@@ -1,7 +1,13 @@
-﻿namespace CloneIntime.Models.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CloneIntime.Models.DTO
 {
     public class GroupDTO
     {
-        public int id { get; set; }  // id = 972101
+        [Required]
+        public string Number { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public DirectionDTO Direction { get; set; }
     }
 }
