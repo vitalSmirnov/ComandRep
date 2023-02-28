@@ -1,5 +1,6 @@
 ﻿using CloneIntime.Models;
 using CloneIntime.Models.DTO;
+using CloneIntime.Services;
 using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,14 +11,14 @@ namespace CloneIntime.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly IAdminService _adminService;
+        private readonly AdminService _adminService; // вернуть интерфейс вмесо сервиса
 
-        public AdminController(IAdminService adminService)
+        public AdminController(AdminService adminService)
         {
             _adminService = adminService;
         }
 
-        [HttpPost("login")]
+        /*[HttpPost("login")]
         public async Task Login([FromBody] CredentialsModel loginCredentials)
         {
             await _adminService.Login(loginCredentials);
@@ -28,31 +29,31 @@ namespace CloneIntime.Controllers
         public async Task Logout()
         {
             await _adminService.Logout(HttpContext);
-        }
+        }*/
 
         [HttpPost("add/teacher")]
-        [Authorize]
+        //[Authorize]
         public async Task AddTeacher([FromBody] ProffessorDTO newTeacher)
         {
             await _adminService.AddTeacher(newTeacher);
         }
 
         [HttpPut("update/teacher/{teacherId}")]
-        [Authorize]
+        //[Authorize]
         public async Task UpdateTeacher(string teacherId, [FromBody] ProffessorDTO newTeacherData)
         {
-            await _adminService.UpdateTeacher(teacherId);
+            await _adminService.UpdateTeacher(teacherId, newTeacherData);
         }
 
         [HttpDelete("delete/teacher/{teacherId}")]
-        [Authorize]
+        //[Authorize]
         public async Task DeleteTeacher(string teacherId)
         {
             await _adminService.DeleteTeacher(teacherId);
         }
 
 
-        [HttpPost("add/pair")]
+        /*[HttpPost("add/pair")]
         [Authorize]
         public async Task SetPair([FromQuery] string id, [FromBody] SetTimeSlotModel newPairData)
         {
@@ -71,6 +72,6 @@ namespace CloneIntime.Controllers
         public async Task UpdatePair([FromQuery] string id, [FromBody] SetTimeSlotModel PairNewData)
         {
             await _adminService.UpdatePair(id, PairNewData);
-        }
+        }*/
     }
 }

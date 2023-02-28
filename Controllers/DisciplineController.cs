@@ -17,7 +17,7 @@ namespace CloneIntime.Controllers
         }
 
         [HttpGet("{facultyId}")]
-        public async Task<List<DirectionDTO>> GetDisciplines(string facultyId)
+        public async Task<List<DisciplineDTO>> GetDisciplines(string facultyId)
         {
             return await _disciplineService.GetDisciplines(facultyId);
         }

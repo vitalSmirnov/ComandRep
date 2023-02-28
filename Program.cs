@@ -16,6 +16,8 @@ builder.Services.AddScoped<DisciplineService>();
 builder.Services.AddScoped<GroupService>();
 builder.Services.AddScoped<ProfessorsService>();
 builder.Services.AddScoped<ScheduleService>();
+builder.Services.AddScoped<AdminService>();
+builder.Services.AddScoped<AuditoryService>();
 
 
 //DB

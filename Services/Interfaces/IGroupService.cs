@@ -1,4 +1,5 @@
-﻿using CloneIntime.Models.DTO;
+﻿using CloneIntime.Entities;
+using CloneIntime.Models.DTO;
 
 namespace CloneIntime.Services.Interfaces
 {

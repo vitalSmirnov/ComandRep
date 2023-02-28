@@ -2,6 +2,7 @@
 {
     public class AuditoryDTO
     {
-        public Int32 Number { get; set; }
+        public string Number { get; set; }
+        public string Name { get; set; }
     }
 }

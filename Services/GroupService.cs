@@ -24,7 +24,7 @@ namespace CloneIntime.Services
                 Direction = new DirectionDTO
                 {
                     Name = group.Direction.Name,
-                    Number = group.Direction.Number,
+                    Number = group.Direction.Number
                 }
             }));
 
