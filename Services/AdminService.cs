@@ -5,15 +5,18 @@ using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
+using CloneIntime.Models.Entities;
 
 namespace CloneIntime.Services
 {
     public class AdminService
     {
         private readonly Context _context;
-        public AdminService(Context context)
+        private readonly SupportService _support;
+        public AdminService(Context context, SupportService support)
         {
             _context = context;
+            _support = support;
         }
 
         public async Task<IActionResult> AddTeacher(ProffessorDTO newTeacher)// Получить группы на определенном направлении
@@ -83,25 +86,24 @@ namespace CloneIntime.Services
                 });
 
             var id = user.Id;
-            var token = new JwtSecurityTokenHandler().WriteToken(Generate(model.Email, user.Id));
+            var token = new JwtSecurityTokenHandler().WriteToken(_support.GenerateJWT(model.Email, user.Id.ToString()));
 
-            await _context.Token.AddAsync(new TokenEntity
-            {
-                Id = id,
-                Token = token
-            });
 
-            return new TokenResponse
+            return new TokenResponseDTO
             {
                 Token = token
             };
         }
         public async Task<IActionResult> Logout(string userToken)
         {
-            var token = _context.Token.FirstOrDefault(x => x.Token == userToken);
+            var id = Guid.NewGuid();
+            var token = new TokenEntity
+            {
+                Id = id,
+                Token = userToken
 
-            if (token != null)
-                _context.Token.Remove(token);
+            };
+            await _context.TokenEntity.AddAsync(token);
             await _context.SaveChangesAsync();
 
             return new JsonResult(new { message = "Logged out" });

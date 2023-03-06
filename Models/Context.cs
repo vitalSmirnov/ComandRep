@@ -1,4 +1,5 @@
 ﻿using CloneIntime.Entities;
+using CloneIntime.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CloneIntime.Models
@@ -15,6 +16,7 @@ namespace CloneIntime.Models
         public DbSet<PairEntity> PairEntities { get; set; }
         public DbSet<TeacherEntity> TeachersEntities { get; set; }
         public DbSet<TimeSlotEntity> TimeSlotEntities { get; set; }
+        public DbSet<TokenEntity> TokenEntity { get; set; }
         public Context(DbContextOptions<Context> options) : base(options)
         {
             Database.EnsureCreated();

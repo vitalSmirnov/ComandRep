@@ -27,7 +27,7 @@ namespace CloneIntime.Services
             return claimidentity;
         }
 
-        private JwtSecurityToken GenerateJWT(string email, string id)
+        public JwtSecurityToken GenerateJWT(string email, string id)
         {
             var now = DateTime.UtcNow;
             var identity = GetIdentity(email, id);
