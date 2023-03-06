@@ -45,7 +45,7 @@ namespace CloneIntime.Services
             teacher.Email = newTeacher.Email;
             teacher.DateUpdated = DateOnly.FromDateTime(DateTime.Now).ToString();
 
-             _context.Update(teacher);
+            _context.Update(teacher);
             _context.SaveChangesAsync();
 
             return new OkResult();
@@ -92,13 +92,37 @@ namespace CloneIntime.Services
             var message = "All right";
             return new OkObjectResult(message);
         }
-        /*public async Task<IActionResult> UpdatePair(string id, SetTimeSlotModel PairNewData)
+        public async Task<IActionResult> UpdatePair(string id, SetTimeSlotModel PairNewData)
         {
+            var pair = await _context.PairEntities.FirstOrDefaultAsync(x => x.Id.ToString() == id && x.IsActive);
+            var auditory = await _context.AuditoryEntities.FirstOrDefaultAsync(x => x.Number == PairNewData.Audiroty);
+            var discipline = await _context.DisciplineEntities.FirstOrDefaultAsync(x => x.Name == PairNewData.Discipline);
+            var teacher = await _context.TeachersEntities.FirstOrDefaultAsync(x => x.Name == PairNewData.Professor);
+
+            if (pair == null)
+                return new NotFoundObjectResult(new {message =  "Pair not found" }); // прописать ошибку
+            if (auditory == null)
+                return new NotFoundObjectResult(new { message = "auditory not found" }); // прописать ошибку
+            if (discipline == null)
+                return new NotFoundObjectResult(new { message = "discipline not found" }); // прописать ошибку
+            if (teacher == null)
+                return new NotFoundObjectResult(new { message = "teacher not found" }); // прописать ошибку
+
+            pair.Auditory = auditory;
+            pair.Discipline = discipline;
+            pair.Teacher = teacher;
+            pair.DateUpdated = DateTime.Now.ToString();
+            pair.Group = fillGroups(PairNewData.Groups);
+
+            _context.Update(pair);
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult(pair);
 
         }
-        public async Task<IActionResult> DeletePair(string pairId)// Получить группы на определенном направлении
-        {*/
-
+        /*public async Task<IActionResult> DeletePair(string pairId)// Получить группы на определенном направлении
+        {
+    }*/
 
         public async Task<ActionResult<TokenResponseDTO>> Login(CredentialsModel model)
         {
