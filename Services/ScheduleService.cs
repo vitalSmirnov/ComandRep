@@ -71,7 +71,7 @@ namespace CloneIntime.Services
                 .Include(k => k.Group)
                 .Include(x => x.Lessons)
                 .ThenInclude(j => j.Pair)
-                .Where(l => l.Group.Number == groupNumber && (l.Date >= model.StartDate && l.Date <= model.EndDate))
+                .Where(l => l.Group.Number == groupNumber && (l.Date >= model.StartDate && l.Date <= model.EndDate) && l.IsActive)
                 .ToListAsync();
 
              var result =  FillGroupSchedule(groupScheduleEntity);
