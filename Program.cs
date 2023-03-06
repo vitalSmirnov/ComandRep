@@ -1,6 +1,10 @@
 using CloneIntime.Models;
 using CloneIntime.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization;
+using CloneIntime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,7 @@ builder.Services.AddScoped<ProfessorsService>();
 builder.Services.AddScoped<ScheduleService>();
 builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<AuditoryService>();
+builder.Services.AddScoped<SupportService>();
 
 
 //DB
@@ -34,7 +39,43 @@ builder.Services.AddCors(options =>
     });
 });
 
+//JWT:
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            // указывает, будет ли валидироваться издатель при валидации токена
+            ValidateIssuer = true,
+            // строка, представляющая издателя
+            ValidIssuer = JWTConfiguration.Issuer,
+            // будет ли валидироваться потребитель токена
+            ValidateAudience = true,
+            // установка потребителя токена
+            ValidAudience = JWTConfiguration.Audience,
+            // будет ли валидироваться время существования
+            ValidateLifetime = true,
+            // установка ключа безопасности
+            IssuerSigningKey = JWTConfiguration.GetSymmetricSecurityKey(),
+            // валидация ключа безопасности
+            ValidateIssuerSigningKey = true,
+
+        };
+    });
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
+
 var app = builder.Build();
+
+
+//JWT init:
+app.UseAuthentication();
+app.UseAuthorization();
 
 //DB init:
 using var serviceScope = app.Services.CreateScope();

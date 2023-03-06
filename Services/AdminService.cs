@@ -4,6 +4,7 @@ using CloneIntime.Models;
 using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CloneIntime.Services
 {
@@ -66,16 +67,44 @@ namespace CloneIntime.Services
 
         }
         public async Task<IActionResult> DeletePair(string pairId)// Получить группы на определенном направлении
-        {
+        {*/
 
+
+        public async Task<ActionResult<TokenResponseDTO>> Login(CredentialsModel model)
+        {
+            var user = _context.AdminEntities.FirstOrDefault(x => x.Login == model.Email);
+
+            /*if (user == null)
+                throw new UserNotFoundException();*/
+
+            if (user.Password != model.Password)
+                return new BadRequestObjectResult(new { 
+                    message = "Incorrect Password",
+                });
+
+            var id = user.Id;
+            var token = new JwtSecurityTokenHandler().WriteToken(Generate(model.Email, user.Id));
+
+            await _context.Token.AddAsync(new TokenEntity
+            {
+                Id = id,
+                Token = token
+            });
+
+            return new TokenResponse
+            {
+                Token = token
+            };
         }
-        public async Task<IActionResult> Login(CredentialsModel loginCredentials)
+        public async Task<IActionResult> Logout(string userToken)
         {
+            var token = _context.Token.FirstOrDefault(x => x.Token == userToken);
 
+            if (token != null)
+                _context.Token.Remove(token);
+            await _context.SaveChangesAsync();
+
+            return new JsonResult(new { message = "Logged out" });
         }
-        public async Task<IActionResult> Logout(HttpContext httpContext)
-        {
-
-        }*/
     }
 }
