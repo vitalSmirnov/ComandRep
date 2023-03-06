@@ -75,7 +75,7 @@ namespace CloneIntime.Services
 
         public async Task<ActionResult<TokenResponseDTO>> Login(CredentialsModel model)
         {
-            var user = _context.AdminEntities.FirstOrDefault(x => x.Login == model.Email);
+            var user = await _context.AdminEntities.FirstOrDefaultAsync(x => x.Login == model.Email);
 
             /*if (user == null)
                 throw new UserNotFoundException();*/
