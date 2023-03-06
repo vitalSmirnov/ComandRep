@@ -57,6 +57,6 @@ namespace CloneIntime.Services
                 if (user.PhoneNumber == model.PhoneNumber)
                     throw new PhoneAlreadyInBaseException();
            }*/
-        }
+        //}
     }
 }

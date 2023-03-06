@@ -4,8 +4,6 @@ using CloneIntime.Services;
 using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace CloneIntime.Controllers
 {
     [Route("api/schedule")]
@@ -20,21 +18,21 @@ namespace CloneIntime.Controllers
         }
 
         [HttpGet("group/{number}")]
-        public async Task<WeekDTO> GetGroupsSchedule(string number)
+        public async Task<WeekDTO> GetGroupsSchedule(string number, WeekDateDTO model)
         {
-            return await _scheduleService.GetGroupsSchedule(number);
+            return await _scheduleService.GetGroupsSchedule(number, model);
         }
 
         [HttpGet("auditory/{id}")]
-        public async Task<WeekDTO> GetAuditorySchedule(string id)
+        public async Task<WeekDTO> GetAuditorySchedule(string id, WeekDateDTO model)
         {
-            return await _scheduleService.GetAuditorySchedule(id);
+            return await _scheduleService.GetAuditorySchedule(id, model);
         }
 
         [HttpGet("teacher/{id}")]
-        public async Task<WeekDTO> GetTecherSchedule(string id)
+        public async Task<WeekDTO> GetTecherSchedule(string id, WeekDateDTO model)
         {
-            return await _scheduleService.GetTecherSchedule(id);
+            return await _scheduleService.GetTecherSchedule(id, model);
         }
     }
 }
