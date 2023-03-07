@@ -19,6 +19,7 @@ namespace CloneIntime.Services
             var result = new List<ProffessorDTO>();
             result.AddRange(teachers.Select(professor => new ProffessorDTO
             {
+                id = professor.Id,
                 Name = professor.Name,
                 Email = professor.Email,
             }));

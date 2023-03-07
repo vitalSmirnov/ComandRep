@@ -6,7 +6,7 @@ namespace CloneIntime.Models
 {
     public class Context:DbContext
     {
-        public DbSet<AdminEntity> AdminEntities { get; set; }
+        public DbSet<EditorEntity> EditorEntity { get; set; }
         public DbSet<AuditoryEntity> AuditoryEntities { get; set; }
         public DbSet<DayEntity> DayEntities { get; set; }
         public DbSet<DirectionEntity> DirectionEntities { get; set; }

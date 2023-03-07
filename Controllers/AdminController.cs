@@ -12,44 +12,46 @@ namespace CloneIntime.Controllers
     public class AdminController : ControllerBase
     {
         private readonly AdminService _adminService; // вернуть интерфейс вмесо сервиса
+        private readonly SupportService _supportService;
 
-        public AdminController(AdminService adminService)
+        public AdminController(AdminService adminService, SupportService supportService)
         {
             _adminService = adminService;
+            _supportService = supportService;
         }
 
-        /*[HttpPost("login")]
-        public async Task Login([FromBody] CredentialsModel loginCredentials)
+        [HttpPost("login")]
+        public async Task<ActionResult<TokenResponseDTO>> Login([FromBody] CredentialsModel loginCredentials)
         {
-            await _adminService.Login(loginCredentials);
+            return await _adminService.Login(loginCredentials);
         }
 
         [HttpPost("logout")]
         [Authorize]
-        public async Task Logout()
+        public async Task<IActionResult> Logout()
         {
-            await _adminService.Logout(HttpContext);
-        }*/
+            return await _adminService.Logout(await _supportService.GetToken(HttpContext.Request.Headers));
+        }
 
         [HttpPost("add/teacher")]
         //[Authorize]
-        public async Task AddTeacher([FromBody] ProffessorDTO newTeacher)
+        public async Task<IActionResult> AddTeacher([FromBody] ProffessorDTO newTeacher)
         {
-            await _adminService.AddTeacher(newTeacher);
+            return await _adminService.AddTeacher(newTeacher);
         }
 
         [HttpPut("update/teacher/{teacherId}")]
         //[Authorize]
-        public async Task UpdateTeacher(string teacherId, [FromBody] ProffessorDTO newTeacherData)
+        public async Task<IActionResult> UpdateTeacher(string teacherId, [FromBody] ProffessorDTO newTeacherData)
         {
-            await _adminService.UpdateTeacher(teacherId, newTeacherData);
+            return await _adminService.UpdateTeacher(teacherId, newTeacherData);
         }
 
         [HttpDelete("delete/teacher/{teacherId}")]
         //[Authorize]
-        public async Task DeleteTeacher(string teacherId)
+        public async Task<IActionResult> DeleteTeacher(string teacherId)
         {
-            await _adminService.DeleteTeacher(teacherId);
+            return await _adminService.DeleteTeacher(teacherId);
         }
 
 

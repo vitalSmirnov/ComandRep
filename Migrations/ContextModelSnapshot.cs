@@ -22,54 +22,22 @@ namespace CloneIntime.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CloneIntime.Entities.AdminEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdminEntities");
-                });
-
             modelBuilder.Entity("CloneIntime.Entities.AuditoryEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DateCreated")
+                    b.Property<string>("Building")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -84,13 +52,6 @@ namespace CloneIntime.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DayName")
                         .HasColumnType("int");
@@ -113,13 +74,6 @@ namespace CloneIntime.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("uniqueidentifier");
@@ -148,12 +102,8 @@ namespace CloneIntime.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("GroupEntityId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -162,9 +112,38 @@ namespace CloneIntime.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("TeacherEntityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupEntityId");
+
+                    b.HasIndex("TeacherEntityId");
+
                     b.ToTable("DisciplineEntities");
+                });
+
+            modelBuilder.Entity("CloneIntime.Entities.EditorEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EditorEntity");
                 });
 
             modelBuilder.Entity("CloneIntime.Entities.FacultyEntity", b =>
@@ -172,13 +151,6 @@ namespace CloneIntime.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -201,13 +173,6 @@ namespace CloneIntime.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("DirectionId")
                         .HasColumnType("uniqueidentifier");
@@ -239,17 +204,7 @@ namespace CloneIntime.Migrations
                     b.Property<Guid>("AuditoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("DisciplineId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
@@ -261,15 +216,18 @@ namespace CloneIntime.Migrations
                     b.Property<Guid>("TeacherId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("TimeSlotEntityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuditoryId");
 
                     b.HasIndex("DisciplineId");
 
-                    b.HasIndex("GroupId");
-
                     b.HasIndex("TeacherId");
+
+                    b.HasIndex("TimeSlotEntityId");
 
                     b.ToTable("PairEntities");
                 });
@@ -280,11 +238,8 @@ namespace CloneIntime.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DateCreated")
+                    b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -305,53 +260,50 @@ namespace CloneIntime.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DateCreated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DateUpdated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("DayEntityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DayId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("PairId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("WeekDay")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("DayEntityId");
-
-                    b.HasIndex("PairId");
+                    b.HasIndex("DayId");
 
                     b.ToTable("TimeSlotEntities");
                 });
 
-            modelBuilder.Entity("DisciplineEntityTeacherEntity", b =>
+            modelBuilder.Entity("CloneIntime.Models.Entities.TokenEntity", b =>
                 {
-                    b.Property<Guid>("DisciplinesId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TeachersId")
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TokenEntity");
+                });
+
+            modelBuilder.Entity("GroupEntityPairEntity", b =>
+                {
+                    b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("DisciplinesId", "TeachersId");
+                    b.Property<Guid>("PairsId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("TeachersId");
+                    b.HasKey("GroupId", "PairsId");
 
-                    b.ToTable("DisciplineEntityTeacherEntity");
+                    b.HasIndex("PairsId");
+
+                    b.ToTable("GroupEntityPairEntity");
                 });
 
             modelBuilder.Entity("CloneIntime.Entities.DayEntity", b =>
@@ -374,6 +326,17 @@ namespace CloneIntime.Migrations
                         .IsRequired();
 
                     b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("CloneIntime.Entities.DisciplineEntity", b =>
+                {
+                    b.HasOne("CloneIntime.Entities.GroupEntity", null)
+                        .WithMany("Disciplines")
+                        .HasForeignKey("GroupEntityId");
+
+                    b.HasOne("CloneIntime.Entities.TeacherEntity", null)
+                        .WithMany("Disciplines")
+                        .HasForeignKey("TeacherEntityId");
                 });
 
             modelBuilder.Entity("CloneIntime.Entities.GroupEntity", b =>
@@ -401,53 +364,45 @@ namespace CloneIntime.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CloneIntime.Entities.GroupEntity", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CloneIntime.Entities.TeacherEntity", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CloneIntime.Entities.TimeSlotEntity", null)
+                        .WithMany("Pair")
+                        .HasForeignKey("TimeSlotEntityId");
+
                     b.Navigation("Auditory");
 
                     b.Navigation("Discipline");
-
-                    b.Navigation("Group");
 
                     b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("CloneIntime.Entities.TimeSlotEntity", b =>
                 {
-                    b.HasOne("CloneIntime.Entities.DayEntity", null)
+                    b.HasOne("CloneIntime.Entities.DayEntity", "Day")
                         .WithMany("Lessons")
-                        .HasForeignKey("DayEntityId");
-
-                    b.HasOne("CloneIntime.Entities.PairEntity", "Pair")
-                        .WithMany()
-                        .HasForeignKey("PairId")
+                        .HasForeignKey("DayId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pair");
+                    b.Navigation("Day");
                 });
 
-            modelBuilder.Entity("DisciplineEntityTeacherEntity", b =>
+            modelBuilder.Entity("GroupEntityPairEntity", b =>
                 {
-                    b.HasOne("CloneIntime.Entities.DisciplineEntity", null)
+                    b.HasOne("CloneIntime.Entities.GroupEntity", null)
                         .WithMany()
-                        .HasForeignKey("DisciplinesId")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CloneIntime.Entities.TeacherEntity", null)
+                    b.HasOne("CloneIntime.Entities.PairEntity", null)
                         .WithMany()
-                        .HasForeignKey("TeachersId")
+                        .HasForeignKey("PairsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -455,6 +410,21 @@ namespace CloneIntime.Migrations
             modelBuilder.Entity("CloneIntime.Entities.DayEntity", b =>
                 {
                     b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("CloneIntime.Entities.GroupEntity", b =>
+                {
+                    b.Navigation("Disciplines");
+                });
+
+            modelBuilder.Entity("CloneIntime.Entities.TeacherEntity", b =>
+                {
+                    b.Navigation("Disciplines");
+                });
+
+            modelBuilder.Entity("CloneIntime.Entities.TimeSlotEntity", b =>
+                {
+                    b.Navigation("Pair");
                 });
 #pragma warning restore 612, 618
         }

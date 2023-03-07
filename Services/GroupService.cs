@@ -23,18 +23,28 @@ namespace CloneIntime.Services
                 Number = group.Number,
                 Direction = new DirectionDTO
                 {
+                    id = group.Id,
                     Name = group.Direction.Name,
-                    Number = group.Direction.Number
+                    Number = group.Direction.Number,
+                    Faculty = new FacultyDTO{
+                        id = group.Direction.Faculty.Id,
+                        Name = group.Direction.Faculty.Name,
+                        Number = group.Direction.Faculty.Number
+                    }
+
                 }
+                
             }));
 
             return result;
         }
 
-        public async Task<List<GroupDTO>> GetGroups(string directionNumber) // Получить группы на определенном направлении
+        public async Task<List<GroupDTO>> GetGroups(string FacultyNumber) // Получить группы на определенном направлении
         {
-            var groupEntity = _context.GroupEntities.Include(x => x.Direction)
-                .Where(j => j.Direction.Number == directionNumber && j.IsActive);
+            var groupEntity = _context.GroupEntities
+                .Include(x => x.Direction)
+                .ThenInclude(l => l.Faculty)
+                .Where(j => j.Direction.Faculty.Id.ToString() == FacultyNumber && j.IsActive);
 
             if (groupEntity == null)
                 return new List<GroupDTO>(); //прописать исключение

@@ -14,35 +14,29 @@ namespace CloneIntime.Services
             _context = context;
         }
 
-        private List<DisciplineDTO> FillDisciplines(IQueryable<DisciplineEntity> disciplines, string groupId)
+        private List<DisciplineDTO> FillDisciplines(List<GroupEntity> disciplines)
         {
             var result = new List<DisciplineDTO>();
 
-            foreach (var disc in disciplines)
+            result.AddRange(disciplines.Select(x => new DisciplineDTO
             {
-                foreach (var group in disc.Groups)
-                {
-                    if (group.Number == groupId)
-                    {
-                        result.Add(new DisciplineDTO
-                        {
-                            Number = group.Number
-                        });
-                        break;
-                    }
-                }
-            }
+                Name = x.Name,
+                Id = x.Id,
+                IsActive = x.IsActive,
+            }));
             return result;
         }
         public async Task<List<DisciplineDTO>> GetDisciplines(string groupId)
         {
-            var disciplineEntity = _context.DisciplineEntities.Include(x => x.Groups);
+            var disciplineEntity = await _context.GroupEntities
+                .Include(x => x.Disciplines)
+                .ToListAsync();
 
             if (disciplineEntity == null)
                 return new List<DisciplineDTO>();
 
 
-            return FillDisciplines(disciplineEntity, groupId);
+            return FillDisciplines(disciplineEntity);
 
         }
     }

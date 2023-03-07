@@ -5,9 +5,7 @@ namespace CloneIntime.Models.DTO
 {
     public class DisciplineDTO : BaseEntity
     {
-        public TeacherEntity Teacher { get; set; }
-
         [Required]
-        public string Number { get; set; }
+        public string Name { get; set; }
     }
 }

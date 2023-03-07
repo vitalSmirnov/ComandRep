@@ -1,4 +1,5 @@
-﻿using CloneIntime.Models;
+﻿using CloneIntime.Entities;
+using CloneIntime.Models;
 using CloneIntime.Models.DTO;
 using CloneIntime.Services;
 using CloneIntime.Services.Interfaces;
@@ -18,15 +19,15 @@ namespace CloneIntime.Controllers
         }
 
         [HttpGet("group/{number}")]
-        public async Task<WeekDTO> GetGroupsSchedule(string number, WeekDateDTO model)
+        public async Task<WeekDTO> GetGroupsSchedule(string number, DateTime startDate, DateTime endDate)
         {
-            return await _scheduleService.GetGroupsSchedule(number, model);
+            return await _scheduleService.GetGroupsSchedule(number, startDate, endDate);
         }
 
         [HttpGet("auditory/{id}")]
-        public async Task<WeekDTO> GetAuditorySchedule(string id, WeekDateDTO model)
+        public async Task<List<DayEntity>> GetAuditorySchedule(string id, DateTime day)
         {
-            return await _scheduleService.GetAuditorySchedule(id, model);
+            return await _scheduleService.GetAuditorySchedule(id, day);
         }
 
         [HttpGet("teacher/{id}")]

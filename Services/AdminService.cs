@@ -27,7 +27,6 @@ namespace CloneIntime.Services
                 Email = newTeacher.Email,
                 Id = Guid.NewGuid(),
                 IsActive = true,
-                DateCreated = DateOnly.FromDateTime(DateTime.Now).ToString(),
             }); ;
 
 
@@ -43,7 +42,7 @@ namespace CloneIntime.Services
                 return new NotFoundResult();
             teacher.Name = newTeacher.Name;
             teacher.Email = newTeacher.Email;
-            teacher.DateUpdated = DateOnly.FromDateTime(DateTime.Now).ToString();
+
 
             _context.Update(teacher);
             _context.SaveChangesAsync();
@@ -78,7 +77,6 @@ namespace CloneIntime.Services
             var newPair = new PairEntity
             {
                 Auditory = auditory,
-                DateCreated = DateTime.Now.ToString(),
                 Discipline = discipline,
                 Group = fillGroups(newPairData.Groups),
                 IsActive = true,
@@ -111,22 +109,29 @@ namespace CloneIntime.Services
             pair.Auditory = auditory;
             pair.Discipline = discipline;
             pair.Teacher = teacher;
-            pair.DateUpdated = DateTime.Now.ToString();
             pair.Group = fillGroups(PairNewData.Groups);
 
-            _context.Update(pair);
+            _context.PairEntities.Update(pair);
             await _context.SaveChangesAsync();
 
             return new OkObjectResult(pair);
 
         }
-        /*public async Task<IActionResult> DeletePair(string pairId)// Получить группы на определенном направлении
+        /*public async Task<IActionResult> DeletePair(string pairId)
         {
-    }*/
+            var pair = await _context.PairEntities.FirstOrDefaultAsync(x => x.Id.ToString() == pairId && x.IsActive);
+
+
+            if (pair == null)
+                return new NotFoundObjectResult(new { message = "Pair not found" }); // прописать ошибку
+
+            await _context.
+
+        }*/
 
         public async Task<ActionResult<TokenResponseDTO>> Login(CredentialsModel model)
         {
-            var user = await _context.AdminEntities.FirstOrDefaultAsync(x => x.Login == model.Email);
+            var user = await _context.EditorEntity.FirstOrDefaultAsync(x => x.Login == model.Email);
 
             /*if (user == null)
                 throw new UserNotFoundException();*/

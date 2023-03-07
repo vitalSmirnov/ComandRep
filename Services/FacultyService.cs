@@ -20,6 +20,7 @@ namespace CloneIntime.Services
             var result = new List<FacultyDTO>();
             result.AddRange(faculty.Select(direction => new FacultyDTO
             {
+                id = direction.Id,
                 Name = direction.Name,
                 Number = direction.Number,
             }));

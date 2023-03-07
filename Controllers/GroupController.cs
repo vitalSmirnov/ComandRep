@@ -4,6 +4,7 @@ using CloneIntime.Models.DTO;
 using CloneIntime.Services.Interfaces;
 using CloneIntime.Services;
 using CloneIntime.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CloneIntime.Controllers
 {
@@ -18,10 +19,10 @@ namespace CloneIntime.Controllers
             _groupService = groupService;
         }
 
-        [HttpGet("{directionId}")]
-        public async Task<List<GroupDTO>> GetGroups(string directionId)
+        [HttpGet("{faluctyId}")]
+        public async Task<List<GroupDTO>> GetGroups(string faluctyId)
         {
-            return await _groupService.GetGroups(directionId);
+            return await _groupService.GetGroups(faluctyId);
         }
 
     }

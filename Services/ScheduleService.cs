@@ -3,6 +3,7 @@ using CloneIntime.Models;
 using CloneIntime.Models.DTO;
 using CloneIntime.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace CloneIntime.Services
@@ -65,22 +66,30 @@ namespace CloneIntime.Services
             };
         }
 
-        public async Task<WeekDTO> GetGroupsSchedule(string groupNumber, WeekDateDTO model)
+        public async Task<WeekDTO> GetGroupsSchedule(string groupNumber, DateTime startDate, DateTime endDate)
         {
             var groupScheduleEntity = await _context.DayEntities
                 .Include(k => k.Group)
                 .Include(x => x.Lessons)
-                .ThenInclude(j => j.Pair)
-                .Where(l => l.Group.Number == groupNumber && (l.Date >= model.StartDate && l.Date <= model.EndDate) && l.IsActive)
+                .ThenInclude(k => k.Pair)
+                .ThenInclude(k => k.Auditory)
+                         .Include(x => x.Lessons)
+                .Where(l => l.Group.Number == groupNumber /*&& (l.Date >= startDate && l.Date <= endDate) && l.IsActive*/)
                 .ToListAsync();
 
              var result =  FillGroupSchedule(groupScheduleEntity);
 
             return result;
         }
-        public async Task<WeekDTO> GetAuditorySchedule(string audId, WeekDateDTO model)
+        public async Task<List<DayEntity>> GetAuditorySchedule(string audId, DateTime day)
         {
-            return new WeekDTO(); //заглушка
+            var groupScheduleEntity = await _context.DayEntities
+                .Include(t => t.Lessons)
+                .ThenInclude(k => k.Pair.Where(m => m.Auditory.Id.ToString() == audId))
+                .Where(l => l.Date.Date == day.Date)
+                .ToListAsync();
+
+            return groupScheduleEntity; //заглушка
         }
 
         public async Task<WeekDTO> GetTecherSchedule(string teacherId, WeekDateDTO model)

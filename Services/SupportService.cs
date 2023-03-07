@@ -41,6 +41,30 @@ namespace CloneIntime.Services
             return jwt;
         }
 
+        public async Task<string> GetToken(IHeaderDictionary headerDictionary)//HttpContext.Request.Headers
+        {
+            var requestHeaders = new Dictionary<string, string>();
+            foreach (var header in headerDictionary)
+            {
+                requestHeaders.Add(header.Key, header.Value);
+            }
+            var autorizationSrting = requestHeaders["Authorization"];
+            var token = autorizationSrting.Replace("Bearer ", "");
+            return token;
+        }
+
+        public async Task<string> GetUserId(ClaimsPrincipal principal)//HttpContext.User
+        {
+            return principal.Claims.SingleOrDefault(p => p.Type == ClaimTypes.NameIdentifier).Value;
+        }
+
+        public async Task<bool> IsLogged(IHeaderDictionary headerDictionary)
+        {
+            var token = await GetToken(headerDictionary);
+            var tokenEntity = _context.TokenEntity.FirstOrDefault(x => x.Token == token);
+            return !(tokenEntity == null);
+        }
+
         /*private void ValidateData(List<UserEntity> users, UserRegisterModel model)
         {
             if (users == null)
