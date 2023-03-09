@@ -130,7 +130,8 @@ namespace CloneIntime.Services
                             PairNumber = newPairData.PairNumber
                         }
                     }
-            };
+                };
+                await _context.DayEntities.AddAsync(day);
             }
             else
             {
@@ -156,10 +157,10 @@ namespace CloneIntime.Services
                     }
 
                 }
+                _context.DayEntities.Update(day);
             }
 
 
-            await _context.PairEntities.AddAsync(newPair);
             await _context.SaveChangesAsync();
             var message = "All right";
             return new OkObjectResult(message);
@@ -191,7 +192,7 @@ namespace CloneIntime.Services
             return new OkObjectResult(pair);
 
         }
-        /*public async Task<IActionResult> DeletePair(string pairId)
+        public async Task<IActionResult> DeletePair(string pairId)
         {
             var pair = await _context.PairEntities.FirstOrDefaultAsync(x => x.Id.ToString() == pairId && x.IsActive);
 
@@ -199,9 +200,12 @@ namespace CloneIntime.Services
             if (pair == null)
                 return new NotFoundObjectResult(new { message = "Pair not found" }); // прописать ошибку
 
-            await _context.
+            _context.PairEntities.Remove(pair);
+            _context.SaveChangesAsync();
 
-        }*/
+            return new OkResult();
+
+        }
 
         public async Task<ActionResult<TokenResponseDTO>> Login(CredentialsModel model)
         {
