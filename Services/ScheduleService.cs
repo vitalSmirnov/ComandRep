@@ -58,7 +58,7 @@ namespace CloneIntime.Services
             {
                 Day = x.Date.ToString(),
                 Timeslot = TimeSlotFilling(x.Lessons),
-                WeekDay = 0,
+                WeekDay = x.DayName
             }));
             return new WeekDTO
             {
@@ -69,17 +69,23 @@ namespace CloneIntime.Services
         public async Task<WeekDTO> GetGroupsSchedule(string groupNumber, DateTime startDate, DateTime endDate)
         {
             var groupScheduleEntity = await _context.DayEntities
-                .Include(k => k.Group)
-                .Include(x => x.Lessons)
-                .ThenInclude(k => k.Pair)
-                .ThenInclude(k => k.Auditory)
-                         .Include(x => x.Lessons)
-                .Where(l => l.Group.Number == groupNumber /*&& (l.Date >= startDate && l.Date <= endDate) && l.IsActive*/)
+                .Include(timeslots => timeslots.Lessons)
+                    .ThenInclude(pairs => pairs.Pair)
+                        .ThenInclude(teacher => teacher.Teacher)
+                .Include(timeslots => timeslots.Lessons)
+                    .ThenInclude(pairs => pairs.Pair)
+                        .ThenInclude(teacher => teacher.Auditory)
+                .Include(timeslots => timeslots.Lessons)
+                    .ThenInclude(pairs => pairs.Pair)
+                        .ThenInclude(teacher => teacher.Discipline)
+                .Include(timeslots => timeslots.Lessons)
+                    .ThenInclude(pairs => pairs.Pair)
+                        .ThenInclude(teacher => teacher.Group)
                 .ToListAsync();
 
-             var result =  FillGroupSchedule(groupScheduleEntity);
 
-            return result;
+            var results = FillGroupSchedule(groupScheduleEntity);
+            return results;
         }
         public async Task<List<DayEntity>> GetAuditorySchedule(string audId, DateTime day)
         {
