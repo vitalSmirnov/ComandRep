@@ -11,7 +11,7 @@ namespace CloneIntime.Services.Interfaces
         Task AddTeacher(ProffessorDTO newTeacher);
         Task DeleteTeacher(string teacherId);
         Task UpdateTeacher(string teacherId);
-        Task SetPair(string pairId, SetTimeSlotModel newPairData);
+        Task SetPair(SetTimeSlotModel newPairData);
         Task DeletePair(string pairId);
         Task UpdatePair(string id, SetTimeSlotModel PairNewData);
 

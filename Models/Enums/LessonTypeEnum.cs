@@ -5,5 +5,5 @@ public enum LessonTypeEnum
     Lection,
     Practice,
     Exam,
-    Consultation
+    Seminar
 }

@@ -7,6 +7,7 @@ namespace CloneIntime.Models
     {
         [Required]
         public DateTime Date { get; set; }
+        [Required]
         public UInt16 PairNumber { get; set; }
         public LessonTypeEnum Type { get; set; }
         [Required]

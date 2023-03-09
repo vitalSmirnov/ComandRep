@@ -63,7 +63,7 @@ namespace CloneIntime.Services
 
         private List<GroupEntity> fillGroups(List<string> groups)
         {
-            var groupEntity = _context.GroupEntities.Where(x => groups.Contains(x.Name) && x.IsActive).ToList();
+            var groupEntity = _context.GroupEntities.Where(x => groups.Any(g => g == x.Number) && x.IsActive).ToList();
             return groupEntity;
         }
 
@@ -94,7 +94,7 @@ namespace CloneIntime.Services
             }
         }
 
-        public async Task<IActionResult> SetPair(string pairId, SetTimeSlotModel newPairData)// Получить группы на определенном направлении
+        public async Task<IActionResult> SetPair(SetTimeSlotModel newPairData)// Получить группы на определенном направлении
         {
             var auditory = await _context.AuditoryEntities.FirstOrDefaultAsync(x => x.Number == newPairData.Audiroty);
             var discipline = await _context.DisciplineEntities.FirstOrDefaultAsync(x => x.Name == newPairData.Discipline);
@@ -111,10 +111,18 @@ namespace CloneIntime.Services
                 LessonType = newPairData.Type,
                 Teacher = teacher
             };
+            _context.PairEntities.AddAsync(newPair);
 
 
             if (day == null)
             {
+                var newTimeslot = new TimeSlotEntity
+                {
+                    Id = Guid.NewGuid(),
+                    IsActive = true,
+                    Pair = new List<PairEntity> { newPair },
+                    PairNumber = newPairData.PairNumber
+                };
                 day = new DayEntity
                 {
                     Date = newPairData.Date,
@@ -122,28 +130,26 @@ namespace CloneIntime.Services
                     Id = Guid.NewGuid(),
                     IsActive = true,
                     Lessons = new List<TimeSlotEntity> {
-                        new TimeSlotEntity
-                        {
-                            Id = Guid.NewGuid(),
-                            IsActive = true,
-                            Pair = new List<PairEntity>{newPair},
-                            PairNumber = newPairData.PairNumber
-                        }
+                        newTimeslot
                     }
                 };
+                await _context.TimeSlotEntities.AddAsync(newTimeslot);
                 await _context.DayEntities.AddAsync(day);
             }
             else
             {
-                if (day.Lessons.Any(x=> x.PairNumber == newPairData.PairNumber))
-                {
-                    day.Lessons.Add(new TimeSlotEntity
-                    {
+                var existingTimeSlot = day.Lessons.FirstOrDefault(x => x.PairNumber == newPairData.PairNumber);
+
+                if (existingTimeSlot == null) {
+                    var newTimeslot = new TimeSlotEntity
+                    {   
                         Id = Guid.NewGuid(),
                         IsActive = true,
                         Pair = new List<PairEntity> { newPair },
                         PairNumber = newPairData.PairNumber
-                    });
+                    };
+                    day.Lessons.Add(newTimeslot);
+                    await _context.TimeSlotEntities.AddAsync(newTimeslot);
                 }
                 else
                 {
@@ -152,6 +158,7 @@ namespace CloneIntime.Services
                         if (d.PairNumber == newPairData.PairNumber)
                         {
                             d.Pair.Add(newPair);
+                            _context.TimeSlotEntities.Update(d);
                             break;
                         }
                     }

@@ -57,9 +57,9 @@ namespace CloneIntime.Controllers
 
         [HttpPost("add/pair")]
         [Authorize]
-        public async Task SetPair([FromQuery] string id, [FromBody] SetTimeSlotModel newPairData)
+        public async Task<IActionResult> SetPair(SetTimeSlotModel newPairData)
         {
-            await _adminService.SetPair(id, newPairData);
+            return await _adminService.SetPair(newPairData);
         }
 
         /*[HttpDelete("delete/pair/{id}")]
