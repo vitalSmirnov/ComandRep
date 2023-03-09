@@ -71,7 +71,8 @@ namespace CloneIntime.Services
         public async Task<WeekDTO> GetGroupsSchedule(string groupNumber, DateTime startDate, DateTime endDate)
         {
             var groupScheduleEntity = await _context.DayEntities
-                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Group.Any(group => group.Number == groupNumber))))
+                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Group.Any(group => group.Number == groupNumber)))
+                    && day.Date.Date >= startDate && day.Date.Date <= endDate)
                 .Include(day => day.Lessons)
                     .ThenInclude(timeslot => timeslot.Pair)
                         .ThenInclude(pair => pair.Teacher)
@@ -93,7 +94,8 @@ namespace CloneIntime.Services
         public async Task<WeekDTO> GetAuditorySchedule(string audId, DateTime startDate, DateTime endDate)
         {
             var getAuditoryEntity = await _context.DayEntities
-                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Auditory.Number == audId)))
+                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Auditory.Number == audId)) 
+                && day.Date.Date >= startDate && day.Date.Date <= endDate)
                 .Include(day => day.Lessons)
                     .ThenInclude(timeslot => timeslot.Pair)
                         .ThenInclude(pair => pair.Teacher)
@@ -116,7 +118,8 @@ namespace CloneIntime.Services
         public async Task<WeekDTO> GetTecherSchedule(string teacherId, DateTime startDate, DateTime endDate)
         {
             var getTeacherEntity = await _context.DayEntities
-                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Teacher.Id.ToString() == teacherId)))
+                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Teacher.Id.ToString() == teacherId))
+                    && day.Date.Date >= startDate && day.Date.Date <= endDate)
                 .Include(day => day.Lessons)
                     .ThenInclude(timeslot => timeslot.Pair)
                         .ThenInclude(pair => pair.Teacher)

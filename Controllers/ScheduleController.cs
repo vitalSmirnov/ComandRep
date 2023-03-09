@@ -24,10 +24,10 @@ namespace CloneIntime.Controllers
             return await _scheduleService.GetGroupsSchedule(number, startDate, endDate);
         }
 
-        [HttpGet("auditory/{id}")]
-        public async Task<WeekDTO> GetAuditorySchedule(string id, DateTime startDate, DateTime endDate)
+        [HttpGet("auditory/{auditoryNumber}")]
+        public async Task<WeekDTO> GetAuditorySchedule(string auditoryNumber, DateTime startDate, DateTime endDate)
         {
-            return await _scheduleService.GetAuditorySchedule(id, startDate, endDate);
+            return await _scheduleService.GetAuditorySchedule(auditoryNumber, startDate, endDate);
         }
 
         [HttpGet("teacher/{id}")]
