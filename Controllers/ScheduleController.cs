@@ -25,15 +25,15 @@ namespace CloneIntime.Controllers
         }
 
         [HttpGet("auditory/{id}")]
-        public async Task<List<DayEntity>> GetAuditorySchedule(string id, DateTime day)
+        public async Task<WeekDTO> GetAuditorySchedule(string id, DateTime startDate, DateTime endDate)
         {
-            return await _scheduleService.GetAuditorySchedule(id, day);
+            return await _scheduleService.GetAuditorySchedule(id, startDate, endDate);
         }
 
         [HttpGet("teacher/{id}")]
-        public async Task<WeekDTO> GetTecherSchedule(string id, WeekDateDTO model)
+        public async Task<WeekDTO> GetTecherSchedule(string id, DateTime startDate, DateTime endDate)
         {
-            return await _scheduleService.GetTecherSchedule(id, model);
+            return await _scheduleService.GetTecherSchedule(id, startDate, endDate);
         }
     }
 }

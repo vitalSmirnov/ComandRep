@@ -3,6 +3,7 @@ using CloneIntime.Models;
 using CloneIntime.Models.DTO;
 using CloneIntime.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -51,15 +52,16 @@ namespace CloneIntime.Services
             }));
             return TimeSlots;
         }
-        private WeekDTO FillGroupSchedule(List<DayEntity> days)
+        private WeekDTO FillSchedule(List<DayEntity> days)
         { 
             var result = new List<DayDTO>();
             result.AddRange(days.Select(x => new DayDTO
             {
                 Day = x.Date.ToString(),
-                Timeslot = TimeSlotFilling(x.Lessons),
-                WeekDay = x.DayName
+                WeekDay = x.DayName,
+                Timeslot = TimeSlotFilling(x.Lessons)
             }));
+
             return new WeekDTO
             {
                 Days = result
@@ -69,38 +71,68 @@ namespace CloneIntime.Services
         public async Task<WeekDTO> GetGroupsSchedule(string groupNumber, DateTime startDate, DateTime endDate)
         {
             var groupScheduleEntity = await _context.DayEntities
-                .Include(timeslots => timeslots.Lessons)
-                    .ThenInclude(pairs => pairs.Pair)
-                        .ThenInclude(teacher => teacher.Teacher)
-                .Include(timeslots => timeslots.Lessons)
-                    .ThenInclude(pairs => pairs.Pair)
-                        .ThenInclude(teacher => teacher.Auditory)
-                .Include(timeslots => timeslots.Lessons)
-                    .ThenInclude(pairs => pairs.Pair)
-                        .ThenInclude(teacher => teacher.Discipline)
-                .Include(timeslots => timeslots.Lessons)
-                    .ThenInclude(pairs => pairs.Pair)
-                        .ThenInclude(teacher => teacher.Group)
-                .ToListAsync();
+                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Group.Any(group => group.Number == groupNumber))))
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Teacher)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Auditory)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Discipline)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Group)
+                    .ToListAsync();
 
 
-            var results = FillGroupSchedule(groupScheduleEntity);
+            var results = FillSchedule(groupScheduleEntity);
             return results;
         }
-        public async Task<List<DayEntity>> GetAuditorySchedule(string audId, DateTime day)
+        public async Task<WeekDTO> GetAuditorySchedule(string audId, DateTime startDate, DateTime endDate)
         {
-            var groupScheduleEntity = await _context.DayEntities
-                .Include(t => t.Lessons)
-                .ThenInclude(k => k.Pair.Where(m => m.Auditory.Id.ToString() == audId))
-                .Where(l => l.Date.Date == day.Date)
-                .ToListAsync();
+            var getAuditoryEntity = await _context.DayEntities
+                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Auditory.Number == audId)))
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Teacher)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Auditory)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Discipline)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Group)
+                    .ToListAsync();
 
-            return groupScheduleEntity; //заглушка
+
+            var results = FillSchedule(getAuditoryEntity);
+            return results;
         }
 
-        public async Task<WeekDTO> GetTecherSchedule(string teacherId, WeekDateDTO model)
+        public async Task<WeekDTO> GetTecherSchedule(string teacherId, DateTime startDate, DateTime endDate)
         {
-            return new WeekDTO(); //заглушка
+            var getTeacherEntity = await _context.DayEntities
+                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Teacher.Id.ToString() == teacherId)))
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Teacher)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Auditory)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Discipline)
+                .Include(day => day.Lessons)
+                    .ThenInclude(timeslot => timeslot.Pair)
+                        .ThenInclude(pair => pair.Group)
+                    .ToListAsync();
+
+            var results = FillSchedule(getTeacherEntity);
+            return results;
         }
     }
 }
