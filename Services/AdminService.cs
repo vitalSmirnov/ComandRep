@@ -67,23 +67,97 @@ namespace CloneIntime.Services
             return groupEntity;
         }
 
+        private WeekEnum checkWeekDay(DateTime day)
+        {
+            switch (day.DayOfWeek)
+            {
+                case DayOfWeek.Monday: 
+                    return WeekEnum.Monday;
+                    break;
+                case DayOfWeek.Tuesday:
+                    return WeekEnum.Tuesday;
+                    break;
+                case DayOfWeek.Wednesday:
+                    return WeekEnum.Wednesday;
+                    break;
+                case DayOfWeek.Thursday:
+                    return WeekEnum.Thursday;
+                    break;
+                case DayOfWeek.Friday:
+                    return WeekEnum.Friday;
+                    break;
+                case DayOfWeek.Saturday:
+                    return WeekEnum.Saturday;
+                    break;
+                default:
+                    return WeekEnum.Sunday;
+            }
+        }
+
         public async Task<IActionResult> SetPair(string pairId, SetTimeSlotModel newPairData)// Получить группы на определенном направлении
         {
             var auditory = await _context.AuditoryEntities.FirstOrDefaultAsync(x => x.Number == newPairData.Audiroty);
             var discipline = await _context.DisciplineEntities.FirstOrDefaultAsync(x => x.Name == newPairData.Discipline);
             var teacher = await _context.TeachersEntities.FirstOrDefaultAsync(x => x.Name == newPairData.Professor);
-            var id = Guid.NewGuid();
-
+            var day = await _context.DayEntities.FirstOrDefaultAsync(x => x.Date.Date == newPairData.Date.Date);
+            
             var newPair = new PairEntity
             {
                 Auditory = auditory,
                 Discipline = discipline,
                 Group = fillGroups(newPairData.Groups),
                 IsActive = true,
-                Id = id,
+                Id = Guid.NewGuid(),
                 LessonType = newPairData.Type,
                 Teacher = teacher
             };
+
+
+            if (day == null)
+            {
+                day = new DayEntity
+                {
+                    Date = newPairData.Date,
+                    DayName = checkWeekDay(newPairData.Date.Date),
+                    Id = Guid.NewGuid(),
+                    IsActive = true,
+                    Lessons = new List<TimeSlotEntity> {
+                        new TimeSlotEntity
+                        {
+                            Id = Guid.NewGuid(),
+                            IsActive = true,
+                            Pair = new List<PairEntity>{newPair},
+                            PairNumber = newPairData.PairNumber
+                        }
+                    }
+            };
+            }
+            else
+            {
+                if (day.Lessons.Any(x=> x.PairNumber == newPairData.PairNumber))
+                {
+                    day.Lessons.Add(new TimeSlotEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        IsActive = true,
+                        Pair = new List<PairEntity> { newPair },
+                        PairNumber = newPairData.PairNumber
+                    });
+                }
+                else
+                {
+                    foreach (var d in day.Lessons)
+                    {
+                        if (d.PairNumber == newPairData.PairNumber)
+                        {
+                            d.Pair.Add(newPair);
+                            break;
+                        }
+                    }
+
+                }
+            }
+
 
             await _context.PairEntities.AddAsync(newPair);
             await _context.SaveChangesAsync();

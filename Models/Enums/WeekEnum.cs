@@ -5,7 +5,7 @@ public enum WeekEnum
     Monday,
     Tuesday,
     Wednesday,
-    Thirsday,
+    Thursday,
     Friday,
     Saturday,
     Sunday

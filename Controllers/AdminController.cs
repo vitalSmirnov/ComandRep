@@ -55,14 +55,14 @@ namespace CloneIntime.Controllers
         }
 
 
-        /*[HttpPost("add/pair")]
+        [HttpPost("add/pair")]
         [Authorize]
         public async Task SetPair([FromQuery] string id, [FromBody] SetTimeSlotModel newPairData)
         {
             await _adminService.SetPair(id, newPairData);
         }
 
-        [HttpDelete("delete/pair/{id}")]
+        /*[HttpDelete("delete/pair/{id}")]
         [Authorize]
         public async Task DeletePair([FromQuery] string id)
         {

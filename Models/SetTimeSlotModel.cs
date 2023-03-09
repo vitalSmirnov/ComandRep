@@ -6,8 +6,8 @@ namespace CloneIntime.Models
     public class SetTimeSlotModel
     {
         [Required]
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime Date { get; set; }
+        public UInt16 PairNumber { get; set; }
         public LessonTypeEnum Type { get; set; }
         [Required]
         public string Professor { get; set; }
