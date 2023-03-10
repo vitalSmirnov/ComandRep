@@ -138,7 +138,7 @@ namespace CloneIntime.Services
             }
             else
             {
-                var existingTimeSlot = day.Lessons.FirstOrDefault(x => x.PairNumber == newPairData.PairNumber);
+                var existingTimeSlot = day.Lessons.FirstOrDefault(x => x.PairNumber == newPairData.PairNumber);//переделать, так как не работает
 
                 if (existingTimeSlot == null) {
                     var newTimeslot = new TimeSlotEntity
