@@ -29,7 +29,7 @@ namespace CloneIntime.Services
         public async Task<List<DirectionDTO>> GetDirections(string facultyId) // Получить группы на определенном направлении
         {
             var directionEntity = _context.DirectionEntities.Include(x => x.Faculty)
-                .Where(j => j.Faculty.Number == facultyId && j.IsActive);
+                .Where(j => j.Faculty.Id.ToString() == facultyId && j.IsActive);
 
             if (directionEntity == null)
                 return new List<DirectionDTO>(); //прописать исключение

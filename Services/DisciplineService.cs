@@ -14,23 +14,23 @@ namespace CloneIntime.Services
             _context = context;
         }
 
-        private List<DisciplineDTO> FillDisciplines(List<GroupEntity> disciplines)
+        private List<DisciplineDTO> FillDisciplines(FacultyEntity disciplines)
         {
             var result = new List<DisciplineDTO>();
 
-            result.AddRange(disciplines.Select(x => new DisciplineDTO
+            result.AddRange(disciplines.Disciplines.Select(x => new DisciplineDTO
             {
                 Name = x.Name,
                 Id = x.Id,
-                IsActive = x.IsActive,
+                IsActive = x.IsActive
             }));
             return result;
         }
-        public async Task<List<DisciplineDTO>> GetDisciplines(string groupId)
+        public async Task<List<DisciplineDTO>> GetDisciplines(string facultyId)
         {
-            var disciplineEntity = await _context.GroupEntities
-                .Include(x => x.Disciplines)
-                .ToListAsync();
+            var disciplineEntity = await _context.FacultyEntities
+                .Include(x=> x.Disciplines)
+                .FirstOrDefaultAsync(x => x.Id.ToString() == facultyId);
 
             if (disciplineEntity == null)
                 return new List<DisciplineDTO>();

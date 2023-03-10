@@ -17,7 +17,7 @@ namespace CloneIntime.Models
         [Required]
         public string Discipline { get; set; }
         [Required]
-        public string Audiroty { get; set; }
+        public string Auditory { get; set; }
 
     }
 }

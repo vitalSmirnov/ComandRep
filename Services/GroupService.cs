@@ -14,7 +14,7 @@ namespace CloneIntime.Services
             _context = context;
         }
 
-        private List<GroupDTO> FillGroups(IQueryable<GroupEntity> groups)
+        private List<GroupDTO> FillGroups(List<GroupEntity> groups)
         {
             var result = new List<GroupDTO>();
             result.AddRange(groups.Select(group => new GroupDTO
@@ -39,12 +39,13 @@ namespace CloneIntime.Services
             return result;
         }
 
-        public async Task<List<GroupDTO>> GetGroups(string FacultyNumber) // Получить группы на определенном направлении
+        public async Task<List<GroupDTO>> GetGroups(string facultyId) // Получить группы на определенном направлении
         {
-            var groupEntity = _context.GroupEntities
+            var groupEntity = await _context.GroupEntities
                 .Include(x => x.Direction)
                 .ThenInclude(l => l.Faculty)
-                .Where(j => j.Direction.Faculty.Id.ToString() == FacultyNumber && j.IsActive);
+                .Where(j => j.Direction.Faculty.Id.ToString() == facultyId && j.IsActive)
+                .ToListAsync();
 
             if (groupEntity == null)
                 return new List<GroupDTO>(); //прописать исключение

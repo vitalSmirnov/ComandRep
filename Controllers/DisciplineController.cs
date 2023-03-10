@@ -1,4 +1,5 @@
 ﻿using CloneIntime.Models.DTO;
+using CloneIntime.Services;
 using CloneIntime.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace CloneIntime.Controllers
 
         private readonly IDisciplineService _disciplineService;
 
-        public DisciplineController(IDisciplineService disciplineService)
+        public DisciplineController(DisciplineService disciplineService)
         {
             _disciplineService = disciplineService;
         }

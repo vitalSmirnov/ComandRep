@@ -96,7 +96,7 @@ namespace CloneIntime.Services
 
         public async Task<IActionResult> SetPair(SetTimeSlotModel newPairData)// Получить группы на определенном направлении
         {
-            var auditory = await _context.AuditoryEntities.FirstOrDefaultAsync(x => x.Number == newPairData.Audiroty);
+            var auditory = await _context.AuditoryEntities.FirstOrDefaultAsync(x => x.Number == newPairData.Auditory);
             var discipline = await _context.DisciplineEntities.FirstOrDefaultAsync(x => x.Name == newPairData.Discipline);
             var teacher = await _context.TeachersEntities.FirstOrDefaultAsync(x => x.Name == newPairData.Professor);
             var day = await _context.DayEntities.FirstOrDefaultAsync(x => x.Date.Date == newPairData.Date.Date);
@@ -175,7 +175,7 @@ namespace CloneIntime.Services
         public async Task<IActionResult> UpdatePair(string id, SetTimeSlotModel PairNewData)
         {
             var pair = await _context.PairEntities.FirstOrDefaultAsync(x => x.Id.ToString() == id && x.IsActive);
-            var auditory = await _context.AuditoryEntities.FirstOrDefaultAsync(x => x.Number == PairNewData.Audiroty);
+            var auditory = await _context.AuditoryEntities.FirstOrDefaultAsync(x => x.Number == PairNewData.Auditory);
             var discipline = await _context.DisciplineEntities.FirstOrDefaultAsync(x => x.Name == PairNewData.Discipline);
             var teacher = await _context.TeachersEntities.FirstOrDefaultAsync(x => x.Name == PairNewData.Professor);
 

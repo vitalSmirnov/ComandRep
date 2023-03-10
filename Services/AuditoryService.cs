@@ -18,6 +18,7 @@ namespace CloneIntime.Services
             var result = new List<AuditoryDTO>();
             result.AddRange(audit.Select(auditory => new AuditoryDTO
             {
+                Id = auditory.Id,
                 Name = auditory.Number + " (" + auditory.Building.Trim() + ")",
                 Number = auditory.Number,
             }));

@@ -33,6 +33,7 @@ namespace CloneIntime.Services
             var result = new List<PairDTO>();
             result.AddRange(pair.Select(j => new PairDTO
             {
+                PairId = j.Id,
                 LessonType = j.LessonType,
                 Audiroty = j.Auditory.Number,
                 Discipline = j.Discipline.Name,
@@ -68,11 +69,11 @@ namespace CloneIntime.Services
             };
         }
 
-        public async Task<WeekDTO> GetGroupsSchedule(string groupNumber, DateTime startDate, DateTime endDate)
+        public async Task<WeekDTO> GetGroupsSchedule(List<string> groupNumber, DateTime startDate, DateTime endDate)
         {
             var groupScheduleEntity = await _context.DayEntities
-                .Where(day => day.Lessons.Any(timeslot => timeslot.Pair.Any(pair => pair.Group.Any(group => group.Number == groupNumber)))
-                    && day.Date.Date >= startDate && day.Date.Date <= endDate)
+                .Where(day => day.Lessons.Any(lesson => lesson.Pair.Any(pair => pair.Group.Any(group => groupNumber.Contains(group.Number)))) 
+                && day.Date.Date >= startDate && day.Date.Date <= endDate)
                 .Include(day => day.Lessons)
                     .ThenInclude(timeslot => timeslot.Pair)
                         .ThenInclude(pair => pair.Teacher)
@@ -85,6 +86,7 @@ namespace CloneIntime.Services
                 .Include(day => day.Lessons)
                     .ThenInclude(timeslot => timeslot.Pair)
                         .ThenInclude(pair => pair.Group)
+                .OrderBy(x=> x.Date)
                     .ToListAsync();
 
 
