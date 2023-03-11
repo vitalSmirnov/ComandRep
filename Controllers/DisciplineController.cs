@@ -22,5 +22,11 @@ namespace CloneIntime.Controllers
         {
             return await _disciplineService.GetDisciplines(facultyId);
         }
+
+        [HttpGet]
+        public async Task<List<DisciplineDTO>> GetAllDisciplines()
+        {
+            return await _disciplineService.GetDisciplines();
+        }
     }
 }

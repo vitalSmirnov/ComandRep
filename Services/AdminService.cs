@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using CloneIntime.Models.Entities;
+using System.Linq;
 
 namespace CloneIntime.Services
 {
@@ -19,16 +20,28 @@ namespace CloneIntime.Services
             _support = support;
         }
 
+        private List<DisciplineEntity> fillDiscipline(List<DisciplineDTO> disciplines)
+        {
+            var disciplineIds = disciplines.Select(disc => disc.Id).ToList();
+
+            var result = _context.DisciplineEntities
+                    .Where(x => disciplineIds.Contains(x.Id))
+                .ToList();
+
+            return result;
+        }
+
         public async Task<IActionResult> AddTeacher(ProffessorDTO newTeacher)// Получить группы на определенном направлении
         {
+            var id = Guid.NewGuid();
             await _context.AddAsync(new TeacherEntity
             {
                 Name = newTeacher.Name,
                 Email = newTeacher.Email,
-                Id = Guid.NewGuid(),
+                Id = id,
                 IsActive = true,
-            }); ;
-
+                Disciplines = fillDiscipline(newTeacher.Disciplines)
+        });
 
             _context.SaveChangesAsync();
 
@@ -37,15 +50,22 @@ namespace CloneIntime.Services
         public async Task<IActionResult> UpdateTeacher(string teacherId, ProffessorDTO newTeacher)// Получить группы на определенном направлении
         {
             var teacher = await _context.TeachersEntities.FirstOrDefaultAsync(x => x.Id.ToString() == teacherId && x.IsActive);
+            var disciplines = new List<DisciplineEntity>();
+            var disciplinesEntity = await _context.DisciplineEntities
+                .Where(x => newTeacher.Disciplines.Any(name => name.Id.ToString() == x.Id.ToString()))
+                .ToListAsync();
+            disciplines.AddRange(disciplinesEntity);
 
             if (teacher == null)
                 return new NotFoundResult();
+
+            teacher.Disciplines = disciplines;
             teacher.Name = newTeacher.Name;
             teacher.Email = newTeacher.Email;
 
 
             _context.Update(teacher);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return new OkResult();
         }
@@ -73,22 +93,16 @@ namespace CloneIntime.Services
             {
                 case DayOfWeek.Monday: 
                     return WeekEnum.Monday;
-                    break;
                 case DayOfWeek.Tuesday:
                     return WeekEnum.Tuesday;
-                    break;
                 case DayOfWeek.Wednesday:
                     return WeekEnum.Wednesday;
-                    break;
                 case DayOfWeek.Thursday:
                     return WeekEnum.Thursday;
-                    break;
                 case DayOfWeek.Friday:
                     return WeekEnum.Friday;
-                    break;
                 case DayOfWeek.Saturday:
                     return WeekEnum.Saturday;
-                    break;
                 default:
                     return WeekEnum.Sunday;
             }
