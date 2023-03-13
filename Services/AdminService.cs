@@ -111,9 +111,12 @@ namespace CloneIntime.Services
         public async Task<IActionResult> SetPair(SetTimeSlotModel newPairData)// Получить группы на определенном направлении
         {
             var auditory = await _context.AuditoryEntities.FirstOrDefaultAsync(x => x.Number == newPairData.Auditory);
-            var discipline = await _context.DisciplineEntities.FirstOrDefaultAsync(x => x.Name == newPairData.Discipline);
-            var teacher = await _context.TeachersEntities.FirstOrDefaultAsync(x => x.Name == newPairData.Professor);
-            var day = await _context.DayEntities.FirstOrDefaultAsync(x => x.Date.Date == newPairData.Date.Date);
+            var discipline = await _context.DisciplineEntities.FirstOrDefaultAsync(x => x.Id.ToString() == newPairData.Discipline);
+            var teacher = await _context.TeachersEntities.FirstOrDefaultAsync(x => x.Id.ToString() == newPairData.Professor);
+            var day = await _context.DayEntities
+                .Include(x=> x.Lessons)
+                .ThenInclude(j => j.Pair)
+                .FirstOrDefaultAsync(x => x.Date.Date == newPairData.Date.Date);
             
             var newPair = new PairEntity
             {

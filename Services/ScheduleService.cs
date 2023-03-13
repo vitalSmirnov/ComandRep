@@ -49,6 +49,7 @@ namespace CloneIntime.Services
             TimeSlots.AddRange(timeslot.Select(j => new TimeSlotDTO
             {
                 Pairs = fillPairs(j.Pair),
+                SlotNumber = j.PairNumber
 
             }));
             return TimeSlots;

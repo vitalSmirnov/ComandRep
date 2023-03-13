@@ -5,7 +5,6 @@ namespace CloneIntime.Models
 {
     public class SetTimeSlotModel
     {
-        [Required]
         public DateTime Date { get; set; }
         [Required]
         public UInt16 PairNumber { get; set; }

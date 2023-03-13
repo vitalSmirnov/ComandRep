@@ -35,7 +35,7 @@ namespace CloneIntime.Services
                 id = professor.Id,
                 Name = professor.Name,
                 Email = professor.Email,
-                Disciplines = fillDisciplines(professor.Disciplines)
+                //Disciplines = fillDisciplines(professor.Disciplines)
             }));
 
             return result;
@@ -55,7 +55,7 @@ namespace CloneIntime.Services
             return FillProfessors(professorsEntities);
         }
 
-        public async Task<List<ProffessorDTO>> GetProfessors(string disciplineId) // Получить преподов на определенном направлении
+        public async Task<List<ProffessorDTO>> GetProfessors(string disciplineId) // Получить преподов на определенном Предмете
         {
             var professorsEntities = await _context.TeachersEntities
                 .Where(x => x.IsActive && x.Disciplines
